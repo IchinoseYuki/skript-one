@@ -1,0 +1,72 @@
+#Written by IchinoseYuki (Discord:一ノ瀬雪#1027)
+
+on script load:
+	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Core System&9&l]&e&l&k|||&r &7Ver.1.0"
+
+on connect:
+	set {IY::config::%uuid of player%::language} to {IY::config::default::language} if {IY::config::%uuid of player%::language} is not set
+
+on script load:
+	set {IY::config::default::language} to "en" if {IY::config::default::language} is not set
+
+command /config [<string>]:
+	aliases: /c, /cf, /cfg
+	trigger:
+		if arg is set:
+			if player doesn't have permission "skript.iy.config":
+				send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
+				send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
+				stop
+			if arg is not "default" or "dflt" or "df" or "d":
+				send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/config &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "en"
+				send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/config &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "ja"
+				stop
+			open chest with 1 row named "Config -Default-" to player if {IY::config::%uuid of player%::language} is "en"
+			open chest with 1 row named "詳細設定 -デフォルト-" to player if {IY::config::%uuid of player%::language} is "ja"
+			wait a tick
+			if {IY::config::%uuid of player%::language} is "en":
+				set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""3c30484a-76d3-4cfe-88e5-e7599bc9ac4d"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNhYzk3NzRkYTEyMTcyNDg1MzJjZTE0N2Y3ODMxZjY3YTEyZmRjY2ExY2YwY2I0YjM4NDhkZTZiYzk0YjQifX19""}]}}}" named "&eEnglish" with lore "&7Click to change." if {IY::config::default::language} is "en"
+				set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""6a140d7c-ecaf-48ec-879b-3da8d7f1d316"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY0MGFlNDY2MTYyYTQ3ZDNlZTMzYzQwNzZkZjFjYWI5NmYxMTg2MGYwN2VkYjFmMDgzMmM1MjVhOWUzMzMyMyJ9fX0=""}]}}}" named "&eJapanese" with lore "&7Click to change." if {IY::config::default::language} is "ja"
+			if {IY::config::%uuid of player%::language} is "ja":
+				set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""3c30484a-76d3-4cfe-88e5-e7599bc9ac4d"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNhYzk3NzRkYTEyMTcyNDg1MzJjZTE0N2Y3ODMxZjY3YTEyZmRjY2ExY2YwY2I0YjM4NDhkZTZiYzk0YjQifX19""}]}}}" named "&e英語" with lore "&7クリックで変更" if {IY::config::default::language} is "en"
+				set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""6a140d7c-ecaf-48ec-879b-3da8d7f1d316"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY0MGFlNDY2MTYyYTQ3ZDNlZTMzYzQwNzZkZjFjYWI5NmYxMTg2MGYwN2VkYjFmMDgzMmM1MjVhOWUzMzMyMyJ9fX0=""}]}}}" named "&e日本語" with lore "&7クリックで変更" if {IY::config::default::language} is "ja"
+			stop
+		open chest with 1 row named "Config" to player if {IY::config::%uuid of player%::language} is "en"
+		open chest with 1 row named "詳細設定" to player if {IY::config::%uuid of player%::language} is "ja"
+		wait a tick
+		set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""3c30484a-76d3-4cfe-88e5-e7599bc9ac4d"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNhYzk3NzRkYTEyMTcyNDg1MzJjZTE0N2Y3ODMxZjY3YTEyZmRjY2ExY2YwY2I0YjM4NDhkZTZiYzk0YjQifX19""}]}}}" named "&eEnglish" with lore "&7Click to change." if {IY::config::%uuid of player%::language} is "en"
+		set slot 4 of player's current inventory to player head item with nbt "{SkullOwner:{Id:""6a140d7c-ecaf-48ec-879b-3da8d7f1d316"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY0MGFlNDY2MTYyYTQ3ZDNlZTMzYzQwNzZkZjFjYWI5NmYxMTg2MGYwN2VkYjFmMDgzMmM1MjVhOWUzMzMyMyJ9fX0=""}]}}}" named "&e日本語" with lore "&7クリックで変更" if {IY::config::%uuid of player%::language} is "ja"
+
+on tab complete:
+	set {_args::*} to substring of event-string from 2 to length of event-string split at " "
+	{_args::1} is "config" or "c" or "cf" or "cfg" #label
+	if size of {_args::*} is 2: #arg 1
+		set {_comp::*} to "default"
+		loop {_comp::*}:
+			set {_size} to length of {_args::2}
+			if the first {_size} characters of {_args::2} is the first {_size} characters of loop-value:
+				add loop-value to completions
+		if the first 1 characters of {_args::2} is not set:
+			add "default" to completions
+
+on inventory click:
+	name of current inventory is "Config" or "詳細設定"
+	clicked item is set
+	play sound "block.lever.click" with volume 0.5 and pitch 1.5 at player for player
+	if clicked slot is 4:
+		if {IY::config::%uuid of player%::language} is "en":
+			set {IY::config::%uuid of player%::language} to "ja"
+		else:
+			set {IY::config::%uuid of player%::language} to "en"
+		execute player command "/config"
+		
+on inventory click:
+	name of current inventory is "Config -Default-" or "詳細設定 -デフォルト-"
+	clicked item is set
+	play sound "block.lever.click" with volume 0.5 and pitch 1.5 at player for player
+	if clicked slot is 4:
+		if {IY::config::default::language} is "en":
+			set {IY::config::default::language} to "ja"
+		else:
+			set {IY::config::default::language} to "en"
+		execute player command "/config default"
