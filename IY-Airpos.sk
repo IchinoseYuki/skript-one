@@ -1,0 +1,29 @@
+#Written by IchinoseYuki (Discord:一ノ瀬雪#1027)
+#Request: IY-Core Ver:1.0 or later
+
+on script load:
+	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Airpos&9&l]&e&l&k|||&r &7Ver.1.0"
+
+command /airpos:
+	aliases: ap
+	trigger:
+		if player don't have permission "worldedit.selection.pos":
+			send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
+		if {IY::Airpos::%uuid of player%} is true:
+			set {IY::Airpos::%uuid of player%} to false
+			send "&aSuccess: &rChanged your Airpos status to false." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &rAirpos機能を使えないようにしました。" if {IY::config::%uuid of player%::language} is "ja"
+		else:
+			set {IY::Airpos::%uuid of player%} to true
+			send "&aSuccess: &rChanged your Airpos status to true." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &rAirpos機能を使えるようにしました。" if {IY::config::%uuid of player%::language} is "ja"
+
+on leftclick on a air holding wooden axe: 
+	{IY::Airpos::%uuid of player%} is true
+	execute player command "//pos1"
+
+
+on rightclick on a air holding wooden axe: 
+	{IY::Airpos::%uuid of player%} is true
+	execute player command "//pos2"
