@@ -1,0 +1,85 @@
+#Written by IchinoseYuki (Discord:一ノ瀬雪#1027)
+#Request: IY-Core Ver:1.0 or later
+
+on script load:
+	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Gamemode+&9&l]&e&l&k|||&r &7Ver.1.0"
+
+command /gamemode [<string>] [<string>]:
+	aliases: /gm
+	trigger:
+		if player doesn't have permission "skript.iy.gamemode":
+			send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg-1 is not set:
+			send "&4Error: &rSpecify argument for command." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rコマンドの引数を指定してください。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg-1 is not "0" or "s" or "survival" or "1" or "c" or "creative" or "2" or "a" or "adventure" or "3" or "sp" or "spectator":
+			if arg-2 is not set:
+				send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/gamemode &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "en"
+				send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/gamemode &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "ja"
+			if arg-2 is set:
+				loop all players:
+					add loop-player to {_p::*}
+				if {_p::*} contains arg-2:
+					send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "en"
+					send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+				if {_p::*} doesn't contain arg-2:
+					send "&4Error: &rIncorrect argument for command.%nl%&0:      &r%arg-2% is offline.%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "en"
+					send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg-2 is set:
+			loop all players:
+				add loop-player to {_p::*}
+			if {_p::*} doesn't contain arg-2:
+				send "&4Error: &r%arg-2% is offline.%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "en"
+				send "&4失敗: &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+				stop
+			if arg-1 is "0" or "０" or "s" or "survival":
+				set {_gm} to survival
+			if arg-1 is "1" or "１" or "c" or "creative":
+				set {_gm} to creative
+			if arg-1 is "2" or "２" or "a" or "adventure":
+				set {_gm} to adventure
+			if arg-1 is "3" or "３" or "sp" or "spectator":
+				set {_gm} to spectator
+			set gamemode of arg-2 parsed as player to {_gm}
+			send "&aSuccess: &rChanged %arg-2%'s game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &r%arg-2%のゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg-2 is not set:
+			if arg-1 is "0" or "０" or "s" or "survival":
+				set {_gm} to survival
+			if arg-1 is "1" or "１" or "c" or "creative":
+				set {_gm} to creative
+			if arg-1 is "2" or "２" or "a" or "adventure":
+				set {_gm} to adventure
+			if arg-1 is "3" or "３" or "sp" or "spectator":
+				set {_gm} to spectator
+			set gamemode of player to {_gm}
+			send "&aSuccess: &rChanged your game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &rゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+
+on tab complete:
+	set {_args::*} to substring of event-string from 2 to length of event-string split at " "
+	{_args::1} is "gamemode" #label
+	if size of {_args::*} is 2: #arg-1
+		set {_comp::*} to "adventure", "creative", "spectator" and "survival"
+		loop {_comp::*}:
+			set {_size} to length of {_args::2}
+			if the first {_size} characters of {_args::2} is the first {_size} characters of loop-value:
+				add loop-value to completions
+		if the first 1 characters of {_args::2} is not set:
+			add "adventure", "creative", "spectator" and "survival" to completions
+	if size of {_args::*} is 3: #arg-2
+		loop all players:
+			add "%loop-player%" to {_comp::*}
+		loop {_comp::*}:
+			set {_size} to length of {_args::3}
+			if the first {_size} characters of {_args::3} is the first {_size} characters of loop-value:
+				add loop-value to completions
+		if the first 1 characters of {_args::3} is not set:
+			loop all players:
+				add "%loop-player%" to completions
