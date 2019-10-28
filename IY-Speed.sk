@@ -1,0 +1,55 @@
+#Written by IchinoseYuki (Discord:一ノ瀬雪#1027)
+#Request: IY-Core Ver:1.0 or later
+
+on script load:
+	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Walk/Fly Speed&9&l]&e&l&k|||&r &7Ver.1.0"
+
+command /flyspeed [<string>]:
+	aliases: /fs
+	trigger:
+		if player don't have permission "skript.speed.fly":
+			send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg is not set:
+			send "&4Error: &rSpecify argument for command." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rコマンドの引数を指定してください。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg parsed as number is not more than 0.99:
+			send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/flyspeed &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/flyspeed &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		set {_n} to arg parsed as number / 10
+		if arg parsed as number is 1:
+			set the player's fly speed to 0.1
+			send "&aSuccess: &rChanged your fly speed to default." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &r飛行スピードをデフォルトに戻しました。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		set the player's fly speed to {_n}
+		send "&aSuccess: &rChanged your fly speed to %arg%." if {IY::config::%uuid of player%::language} is "en"
+		send "&a成功: &r飛行スピードを%arg%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+
+command /walkspeed [<string>]:
+	aliases: /ws
+	trigger:
+		if player don't have permission "skript.speed.walk":
+			send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg is not set:
+			send "&4Error: &rSpecify argument for command." if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rコマンドの引数を指定してください。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		if arg parsed as number is not more than 0.99:
+			send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/walkspeed &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "en"
+			send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/walkspeed &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		set {_n} to arg parsed as number / 5
+		if arg parsed as number is 1:
+			set the player's walk speed to 0.2
+			send "&aSuccess: &rChanged your walk speed to default." if {IY::config::%uuid of player%::language} is "en"
+			send "&a成功: &r歩行スピードをデフォルトに戻しました。" if {IY::config::%uuid of player%::language} is "ja"
+			stop
+		set the player's walk speed to {_n}
+		send "&aSuccess: &rChanged your walk speed to %arg%." if {IY::config::%uuid of player%::language} is "en"
+		send "&a成功: &r歩行スピードを%arg%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
