@@ -2,12 +2,13 @@
 #Request: IY-Core Ver:1.0 or later
 
 on script load:
-	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Gamemode+&9&l]&e&l&k|||&r &7Ver.1.0"
+	broadcast "&e&l&k|||&9&l[&b&lIchinoseYuki Skript - Gamemode+&9&l]&e&l&k|||&r &7Ver.1.1"
 
 command /gamemode [<string>] [<string>]:
 	aliases: /gm
 	trigger:
 		if player doesn't have permission "skript.iy.gamemode":
+			sender is a player
 			send "&4Error: &rYou don't have permission." if {IY::config::%uuid of player%::language} is "en"
 			send "&4失敗: &rそのコマンドを使用する権限がありません。" if {IY::config::%uuid of player%::language} is "ja"
 			stop
@@ -20,22 +21,28 @@ command /gamemode [<string>] [<string>]:
 				send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/gamemode &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "en"
 				send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/gamemode &c&n%arg-1%" if {IY::config::%uuid of player%::language} is "ja"
 			if arg-2 is set:
-				loop all players:
-					add loop-player to {_p::*}
-				if {_p::*} contains arg-2:
+				if the first 2 characters of arg-2 is "@a" or "@p" or "@r" or "@e" or "@s":
+					if the first 2 characters of arg-2 is "@e":
+						send "&4Error: &rIncorrect argument for command.%nl%&0:      &rOnly players may be affected by this command.%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "en"
+						send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &rこのコマンドはプレイヤーに対してのみ有効です。%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+						stop
+					if the part of arg-2 between index 3 and index 3 is "[":
+						set {_a2} to arg-2
+						set {_op::*} to {_a2} split at "["
+						send "&4Error: &rIncorrect argument for command.%nl%&0:      &rThe selector option is not yet supported.%nl%&0:      &7/gamemode &c&n%arg-1% &7%{_op::1}%&c&n[%{_op::2}%" if {IY::config::%uuid of player%::language} is "en"
+						send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &rセレクターオプションはまだサポートされていません。%nl%&0:      &7/gamemode &c&n%arg-1% &7%{_op::1}%&c&n[%{_op::2}%" if {IY::config::%uuid of player%::language} is "ja"
+						stop
 					send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "en"
 					send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
-				if {_p::*} doesn't contain arg-2:
-					send "&4Error: &rIncorrect argument for command.%nl%&0:      &r%arg-2% is offline.%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "en"
-					send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+				if the first 2 characters of arg-2 is not "@a" or "@p" or "@r" or "@e" or "@s":
+					arg-2 is online:
+						send "&4Error: &rIncorrect argument for command.%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "en"
+						send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &7/gamemode &c&n%arg-1%&7 %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+					else:
+						send "&4Error: &rIncorrect argument for command.%nl%&0:      &r%arg-2% is offline.%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "en"
+						send "&4失敗: &rコマンドの引数の指定が間違っています。%nl%&0:      &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode &c&n%arg-1% %arg-2%" if {IY::config::%uuid of player%::language} is "ja"
 			stop
 		if arg-2 is set:
-			loop all players:
-				add loop-player to {_p::*}
-			if {_p::*} doesn't contain arg-2:
-				send "&4Error: &r%arg-2% is offline.%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "en"
-				send "&4失敗: &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "ja"
-				stop
 			if arg-1 is "0" or "０" or "s" or "survival":
 				set {_gm} to survival
 			if arg-1 is "1" or "１" or "c" or "creative":
@@ -44,9 +51,40 @@ command /gamemode [<string>] [<string>]:
 				set {_gm} to adventure
 			if arg-1 is "3" or "３" or "sp" or "spectator":
 				set {_gm} to spectator
-			set gamemode of arg-2 parsed as player to {_gm}
-			send "&aSuccess: &rChanged %arg-2%'s game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
-			send "&a成功: &r%arg-2%のゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+			loop all players:
+				add loop-player to {_p::*}
+			if the first 2 characters of arg-2 is "@a" or "@p" or "@r" or "@e" or "@s":
+				if the first 2 characters of arg-2 is "@e":
+					send "&4Error: &rOnly players may be affected by this command.%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "en"
+					send "&4失敗: &rこのコマンドはプレイヤーに対してのみ有効です。%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "ja"
+					stop
+				if the part of arg-2 between index 3 and index 3 is "[":
+					set {_a2} to arg-2
+					set {_op::*} to {_a2} split at "["
+					send "&4Error: &rThe selector option is not yet supported.%nl%&0:      &7/gamemode %arg-1% %{_op::1}%&c&n[%{_op::2}%" if {IY::config::%uuid of player%::language} is "en"
+					send "&4失敗: &rセレクターオプションはまだサポートされていません。%nl%&0:      &7/gamemode %arg-1% %{_op::1}%&c&n[%{_op::2}%" if {IY::config::%uuid of player%::language} is "ja"
+					stop
+				if the first 2 characters of arg-2 is "@a":
+					set gamemode of {_p::*} to {_gm}
+					send "&aSuccess: &rChanged all players' game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+					send "&a成功: &rすべてのプレイヤーのゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+				if the first 2 characters of arg-2 is "@p" or "@s":
+					set gamemode of player to {_gm}
+					send "&aSuccess: &rChanged your game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+					send "&a成功: &rあなたのゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+				if the first 2 characters of arg-2 is "@r":
+					set {_p} to random element out of {_p::*}
+					set gamemode of {_p} to {_gm}
+					send "&aSuccess: &rChanged %{_p}%'s game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+					send "&a成功: &r%{_p}%のプレイヤーのゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+			if the first 2 characters of arg-2 is not "@a" or "@p" or "@r" or "@e" or "@s":
+				if arg-2 is online:
+					set gamemode of arg-2 parsed as player to {_gm}
+					send "&aSuccess: &rChanged %arg-2%'s game mode to %{_gm}%." if {IY::config::%uuid of player%::language} is "en"
+					send "&a成功: &r%arg-2%のゲームモードを%{_gm}%に変更しました。" if {IY::config::%uuid of player%::language} is "ja"
+					stop
+				send "&4Error: &r%arg-2% is offline.%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "en"
+				send "&4失敗: &r%arg-2%はオフラインです。%nl%&0:      &7/gamemode %arg-1% &c&n%arg-2%" if {IY::config::%uuid of player%::language} is "ja"
 			stop
 		if arg-2 is not set:
 			if arg-1 is "0" or "０" or "s" or "survival":
